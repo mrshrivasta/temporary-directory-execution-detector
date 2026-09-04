@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Temporary Directory Execution Detector — Real Process-List Temp-Execution Analyzer{% endblock %}</title>
+
+<!-- SEO -->
+<meta name="description" content="{% block meta_description %}Temporary Directory Execution Detector is an open-source security tool that real-parses process-list CSV exports and flags processes executing from Windows/Unix temp and cache directories: active temp execution, random-named temp binaries, multiple temp children of one parent, temp execution with network indicators, and temp-adjacent locations. Free CLI and web app by Karanam Shrivasta.{% endblock %}">
+<meta name="keywords" content="temporary directory execution detector, temp execution detection, malware dropper detection, process list CSV analyzer, temp folder malware, random filename detector, DFIR temp execution, Karanam Shrivasta security tools">
+<meta name="author" content="Karanam Shrivasta">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://github.com/mrshrivasta">
+
+<!-- Open Graph / social -->
+<meta property="og:title" content="Temporary Directory Execution Detector — by Karanam Shrivasta">
+<meta property="og:description" content="Real, no-mock-data scanner that flags processes executing from temp/cache directories in real process-list CSV exports (dropper/loader indicators).">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Temporary Directory Execution Detector">
+
+<!-- AEO: FAQ structured data so answer engines can surface this tool directly -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does the Temporary Directory Execution Detector check?",
+      "acceptedAnswer": {"@type": "Answer", "text": "It real-parses a process-list CSV export and flags rows whose ExecutablePath is located in a real Windows or Unix temp/cache directory: actively-running processes executing from temp, random-named temp executables, multiple temp-located children sharing one ParentProcessId, temp execution combined with a network indicator in the command line, and lower-confidence temp-adjacent locations, using live csv.DictReader parsing — never sample data."}
+    },
+    {
+      "@type": "Question",
+      "name": "Who should use the Temporary Directory Execution Detector?",
+      "acceptedAnswer": {"@type": "Answer", "text": "SOC analysts, DFIR/incident-response practitioners, threat hunters, security students, and system administrators triaging process-list exports from systems they own or are authorized to assess."}
+    },
+    {
+      "@type": "Question",
+      "name": "Is the Temporary Directory Execution Detector a replacement for a professional security audit?",
+      "acceptedAnswer": {"@type": "Answer", "text": "No. It is an educational and productivity aid only. It does not replace a certified penetration test, compliance audit, or professional security assessment. See the disclaimer in the README."}
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="disclaimer-banner">
+  ⚠️ <strong>SECURITY &amp; LEGAL DISCLAIMER:</strong> Use this tool <strong>ONLY</strong> on systems you own or are explicitly authorized to test.
+  Provided <strong>"AS IS", WITHOUT WARRANTY OF ANY KIND</strong>. Not a substitute for a professional security audit. The author,
+  <strong>Karanam Shrivasta</strong>, accepts <strong>NO LIABILITY</strong> for any damage, data loss, downtime, or legal consequences arising from
+  use or misuse of this software. By using this tool you accept full responsibility for your actions. See the README for the complete disclaimer.
+</div>
+
+{% if current_user.is_authenticated %}
+<nav class="navbar">
+  <div class="nav-brand">🔐 Temporary Directory Execution Detector</div>
+  <div class="nav-links">
+    <a href="{{ url_for('dashboard.index') }}">Dashboard</a>
+    <a href="{{ url_for('logs.index') }}">Logs</a>
+    <a href="{{ url_for('alerts.index') }}">Alerts</a>
+    <a href="{{ url_for('incidents.index') }}">Incidents</a>
+    <a href="{{ url_for('analytics.index') }}">Analytics</a>
+    <a href="{{ url_for('reports.index') }}">Reports</a>
+    <a href="{{ url_for('settings.index') }}">Settings</a>
+    <a href="{{ url_for('auth.logout') }}">Logout ({{ current_user.username }})</a>
+  </div>
+</nav>
+{% endif %}
+
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="watermark-footer">
+  <p>
+    Temporary Directory Execution Detector &copy; {{ 2026 }} — Developed by <strong>Karanam Shrivasta</strong>
+    &middot; <a href="{{ github_url }}" target="_blank" rel="noopener">GitHub</a>
+    &middot; <a href="{{ linkedin_url }}" target="_blank" rel="noopener">LinkedIn</a>
+  </p>
+  <p class="footer-disclaimer">For authorized security auditing and educational use only. No warranty. Use at your own risk.</p>
+</footer>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>
